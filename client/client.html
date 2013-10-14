@@ -14,49 +14,163 @@
     };
 
     function connected(e) {
-      var resultDiv = document.getElementById("result");
-      var textAndButton = 'Sending "bye" will disconnect.<br/>Enter text: <input type="text" name="user_input" id="input"/> <input type="button" onclick="send_message()" value="Send"/>'
-      resultDiv.innerHTML = textAndButton;
+      // var resultDiv = document.getElementById("result");
+      // var textAndButton = 'Sending "bye" will disconnect.<br/>Enter text: <input type="text" name="user_input" id="input"/> <input type="button" onclick="send_message()" value="Send"/>'
+      // resultDiv.innerHTML = textAndButton;
 
-      var resultList = document.createElement("ul");
-      resultList.setAttribute("id", "result-list");
-      resultDiv.appendChild(resultList);
+      // var resultList = document.createElement("ul");
+      // resultList.setAttribute("id", "result-list");
+      // resultDiv.appendChild(resultList);
 
-      var mainDiv = document.getElementById("echo_test");
-      var connectButton = document.getElementById("connect-button");
-      mainDiv.removeChild(connectButton);
-      console.log(e);
+      // var mainDiv = document.getElementById("echo_test");
+      // var connectButton = document.getElementById("connect-button");
+      // mainDiv.removeChild(connectButton);
+      // console.log(e);
     };
 
     function disconnected() {
-      alert("Connection is closed..."); 
+      // alert("Connection is closed..."); 
     };
 
     function get_message(event) {
-      var reader = new FileReader();
-      reader.addEventListener("loadend", function() {
-          var newItem = document.createElement('li');
-          newItem.innerHTML = reader.result;
-          document.getElementById("result-list").appendChild(newItem);
-      });
-      reader.readAsText(event.data);
+      // var reader = new FileReader();
+      // reader.addEventListener("loadend", function() {
+      //     var newItem = document.createElement('li');
+      //     newItem.innerHTML = reader.result;
+      //     document.getElementById("result-list").appendChild(newItem);
+      // });
+      // reader.readAsText(event.data);
     };
 
     function send_message() {
-      console.log(ws);
-      var textArea = document.getElementById("input");
-      var message = textArea.value;
-      textArea.value = "";
+      // console.log(ws);
+      // var textArea = document.getElementById("input");
+      // var message = textArea.value;
+      // textArea.value = "";
 
-      ws.send(message);
+      // ws.send(message);
     };
 </script>
+<style>
+  body {
+    font-family: Calibri, sans-serif;
+    background: whitesmoke;
+  }
+
+  button {
+    border: 0;
+    background: none;
+  }
+
+  #Head {
+    background-color: lightslategrey;
+    width: 100%;
+    text-align: center;
+  }
+
+  #Head h1 {
+    font-weight: 900;
+    color: beige;
+    letter-spacing: 1.1px;
+    text-transform: uppercase;
+  }
+
+  #ChatWrapper {
+    width: 600px;
+    margin: 0 auto;
+    height: 400px;
+    border: 1px dashed #CCC;
+    padding: 15px;
+  }
+
+  .l {
+    float: left;
+  }
+
+  .r {
+    float: right;
+  }
+
+  .row {
+    overflow: hidden;
+    clear: both;
+  }
+
+  #ChatWindow {
+    width: 400px;
+    height: 300px;
+    border: 1px solid #E4E4E4;
+  }
+
+  #UserBar {
+    border: 1px solid #E4E4E4;
+    width: 180px;
+    height: 300px;
+  }
+
+  #MessageBox {
+    width: 100%;
+    margin-top: 15px;
+    height: 80px;
+    border: 1px solid #E4E4E4;
+  }
+
+  #ThemeBar {
+    float: left;
+    height: 30px;
+    background-color: #FFF;
+    border: 1px solid #CCC;
+  }
+
+  #ThemeBar button {
+    margin: 5px;
+    width: 49px;
+    height: 20px;
+    background-color: #000;
+  }
+
+  #ThemeBar button:after {
+    content: '';
+    display: block;
+    margin: -1px 0 0 19px;
+    width: 25px;
+    height: 20px;
+    background: #F47;
+  }
+</style>
 </head>
 <body>
-  <div id="echo_test">
+  <!-- <div id="echo_test">
     <input type="button" onclick="connect()" value="Connect" id="connect-button" />
     <div id="result">
     </div>
+  </div> -->
+  <div id='Head'>
+    <h1>Chat Server</h1>
+  </div>
+  <div id='ChatWrapper'>
+    <div class='row'>
+      <div id='ChatWindow' class='l'>
+      </div>
+      <div id='UserBar' class='r'>
+      </div>
+    </div>
+    <div id='MessageBox'>
+      <div class='l'>
+        <div id='Toolbox'>
+        </div>
+        <div id='InputBox'>
+        </div>
+      </div>
+      <div class='r'>
+        <div id='ChatControls'>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id='ThemeBar'>
+    <button type='button' class='lc-sg' data-obj='{bg: "lightcoral", fg: "lightseagreen"'></button>
+    <button type='button' class='sg-lc' data-obj='{bg: "lightcoral", fg: "lightseagreen"'></button>
   </div>
 </body>
 </html>
