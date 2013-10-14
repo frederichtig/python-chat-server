@@ -1,0 +1,62 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <script type="text/javascript">
+
+    var ws = ""; /* So I can have a reference */
+
+    function connect() {
+      ws = new WebSocket("ws://localhost:8880/echo");
+
+      ws.onopen = connected;
+      ws.onmessage = get_message;
+      ws.onclose = disconnected;
+    };
+
+    function connected(e) {
+      var resultDiv = document.getElementById("result");
+      var textAndButton = 'Sending "bye" will disconnect.<br/>Enter text: <input type="text" name="user_input" id="input"/> <input type="button" onclick="send_message()" value="Send"/>'
+      resultDiv.innerHTML = textAndButton;
+
+      var resultList = document.createElement("ul");
+      resultList.setAttribute("id", "result-list");
+      resultDiv.appendChild(resultList);
+
+      var mainDiv = document.getElementById("echo_test");
+      var connectButton = document.getElementById("connect-button");
+      mainDiv.removeChild(connectButton);
+      console.log(e);
+    };
+
+    function disconnected() {
+      alert("Connection is closed..."); 
+    };
+
+    function get_message(event) {
+      var reader = new FileReader();
+      reader.addEventListener("loadend", function() {
+          var newItem = document.createElement('li');
+          newItem.innerHTML = reader.result;
+          document.getElementById("result-list").appendChild(newItem);
+      });
+      reader.readAsText(event.data);
+    };
+
+    function send_message() {
+      console.log(ws);
+      var textArea = document.getElementById("input");
+      var message = textArea.value;
+      textArea.value = "";
+
+      ws.send(message);
+    };
+</script>
+</head>
+<body>
+  <div id="echo_test">
+    <input type="button" onclick="connect()" value="Connect" id="connect-button" />
+    <div id="result">
+    </div>
+  </div>
+</body>
+</html>
