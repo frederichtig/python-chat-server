@@ -1,7 +1,23 @@
 <!DOCTYPE HTML>
 <html>
+  <script src="https://ajax.googleapis.com/ajax/libs/dojo/1.9.1/dojo/dojo.js"></script>
   <head>
+    <title>Python Chat Client</title>
     <script type="text/javascript">
+      require(["dojo/query", "dojo/json", "dojo/domReady!"], function(query, json){
+        query('#Send').on('click', function() {
+          alert("I love fresh " + this.innerHTML);
+          //Here I put the connect statement
+        });
+        query('.theme').on('click', function() {
+          query('.theme.active').removeClass('active');
+          query(this).addClass('active');
+          var obj = json.parse(this.getAttribute("data-obj"));
+          query('#ChatWrapper').style('background-color', obj.bg);
+          query('#ChatWindow, #UserBar, #InputBox').style('background-color', obj.fg);
+          query('#Toolbox, #SendMessage').style('background-color', obj.tools);
+        });
+      });
 
     var ws = ""; /* So I can have a reference */
 
@@ -57,30 +73,16 @@
     background: whitesmoke;
   }
 
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
   button {
     border: 0;
     background: none;
-  }
-
-  #Head {
-    background-color: lightslategrey;
-    width: 100%;
-    text-align: center;
-  }
-
-  #Head h1 {
-    font-weight: 900;
-    color: beige;
-    letter-spacing: 1.1px;
-    text-transform: uppercase;
-  }
-
-  #ChatWrapper {
-    width: 600px;
-    margin: 0 auto;
-    height: 400px;
-    border: 1px dashed #CCC;
-    padding: 15px;
+    cursor: pointer;
   }
 
   .l {
@@ -93,26 +95,112 @@
 
   .row {
     overflow: hidden;
-    clear: both;
+  }
+
+  .pad {
+    padding: 5px;
+  }
+
+  #Head {
+    background-color: lightslategrey;
+    width: 100%;
+    text-align: center;
+  }
+
+    #Head h1 {
+      font-weight: 900;
+      color: seashell;
+      letter-spacing: 1.1px;
+      text-transform: uppercase;
+    }
+
+  #ChatWrapper {
+    width: 600px;
+    margin: 0 auto;
+    height: 400px;
+    border: 1px dashed #CCC;
+    padding: 15px;
   }
 
   #ChatWindow {
     width: 400px;
     height: 300px;
-    border: 1px solid #E4E4E4;
+    border: 1px solid #DDD;
   }
 
   #UserBar {
-    border: 1px solid #E4E4E4;
+    border: 1px solid #DDD;
     width: 180px;
     height: 300px;
   }
+
+    #UserBar .user {
+      padding: 5px 0 5px 20px;
+      display: block;
+      border-bottom: 1px dashed #CCC;
+    }
 
   #MessageBox {
     width: 100%;
     margin-top: 15px;
     height: 80px;
-    border: 1px solid #E4E4E4;
+    border: 1px solid #DDD;
+  }
+
+  #Toolbox {
+    height: 30px;
+    border: 1px solid #DDD;
+    border-width: 0 1px 1px 0;
+    width: 500px;
+  }
+
+    #Toolbox button {
+      float: left;
+      margin: 0 3px;
+      height: 20px;
+      width: 20px;
+    }
+
+  #About {
+    background-repeat: no-repeat;
+    background-image: url(data:image/png;base64,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);
+  }
+
+  #Logout {
+    background-repeat: no-repeat;
+    background-image: url(data:image/png;base64,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);
+  }
+
+  #InputBox {
+    border-right: 1px solid #DDD;
+    width: 500px;
+    height: 49px;
+  }
+
+    #InputBox #Message {
+      color: #888;
+      padding: 0;
+      padding-left: 15px;
+      background: transparent;
+      border: 0;
+      width: 485px;
+      height: 100%;
+    }
+
+  #SendMessage {
+    width: 99px;
+    height: 80px;
+  }
+
+  #Send {
+    background: lightslategray;
+    font-size: 18px;
+    height: 60px;
+    width: 79px;
+    color: whitesmoke;
+    text-transform: uppercase;
+    margin: 10px;
+    letter-spacing: -.5px;
   }
 
   #ThemeBar {
@@ -122,21 +210,67 @@
     border: 1px solid #CCC;
   }
 
-  #ThemeBar button {
-    margin: 5px;
-    width: 49px;
-    height: 20px;
-    background-color: #000;
+    #ThemeBar .expand {
+      width: 20px;
+      height: 20px;
+      background-color: #CCC;
+      margin: 5px;
+    }
+
+    #ThemeBar .theme {
+      padding: 0;
+      margin: 5px;
+      width: 75px;
+      height: 20px;
+      background-color: #000;
+    }
+
+      #ThemeBar .theme.active {
+        outline: 1px solid sienna;
+      }
+
+      #ThemeBar .theme:after,
+      #ThemeBar .theme:before {
+        content: '';
+        display: block;
+        position: relative;
+        width: 25px;
+        height: 20px;
+        background: #F47;
+      }
+
+      #ThemeBar .theme:before {
+        margin: 0 0 0 0;
+        float: left;
+      }
+
+      #ThemeBar .theme:after {
+        margin: 0 0 0 50px;
+      }
+
+  #ThemeBar button.lcl-lsg-dsg {
+    background-color: lightcoral;
   }
 
-  #ThemeBar button:after {
-    content: '';
-    display: block;
-    margin: -1px 0 0 19px;
-    width: 25px;
-    height: 20px;
-    background: #F47;
+    #ThemeBar button.lcl-lsg-dsg:after {
+      background-color: lightseagreen;
+    }
+
+    #ThemeBar button.lcl-lsg-dsg:before {
+      background-color: darkseagreen;
+    }
+
+  #ThemeBar button.lsg-snw-bge {
+    background-color: lightslategrey;
   }
+
+    #ThemeBar button.lsg-snw-bge:after {
+      background-color: snow;
+    }
+
+    #ThemeBar button.lsg-snw-bge:before {
+      background-color: beige;
+    }
 </style>
 </head>
 <body>
@@ -146,31 +280,60 @@
     </div>
   </div> -->
   <div id='Head'>
-    <h1>Chat Server</h1>
+    <h1>Python Chat Client</h1>
   </div>
   <div id='ChatWrapper'>
     <div class='row'>
       <div id='ChatWindow' class='l'>
+        <div class='pad'>
+          <p>asgasgasg</p>
+        </div>
       </div>
       <div id='UserBar' class='r'>
+        <ul id='UserList'>
+          <li>
+            <a href='#' class='user' title='Fred'>Fred</a>
+          </li>
+          <li>
+            <a href='#' class='user' title='Isabella'>Isabella</a>
+          </li>
+          <li>
+            <a href='#' class='user' title='Filipo'>Filipo</a>
+          </li>
+        </ul>
       </div>
     </div>
     <div id='MessageBox'>
       <div class='l'>
         <div id='Toolbox'>
+          <div class='l pad'>
+            <button type='button' title='Emoticons'></button>
+            <button type='button' title='Alert'></button>
+            <button type='button' title='Font'></button>
+          </div>
+          <div class='r pad'>
+            <button type='button' title='Settings'></button>
+            <button type='button' id='About' title='About'></button>
+            <button type='button' id='Logout' title='Logout'></button>
+          </div>
         </div>
-        <div id='InputBox'>
+        <div id='InputBox' class='row'>
+          <input id='Message' type='text' title='Write something!'>
         </div>
       </div>
-      <div class='r'>
-        <div id='ChatControls'>
+      <div class='row'>
+        <div id='SendMessage'>
+            <button type='button' id='Send' value='Send'>Send</button>
         </div>
       </div>
     </div>
   </div>
   <div id='ThemeBar'>
-    <button type='button' class='lc-sg' data-obj='{bg: "lightcoral", fg: "lightseagreen"'></button>
-    <button type='button' class='sg-lc' data-obj='{bg: "lightcoral", fg: "lightseagreen"'></button>
+    <div class='row'>
+      <button type='button' class='theme lcl-lsg-dsg' data-obj='{"bg": "lightcoral", "fg": "lightseagreen", "tools": "darkseagreen"}'></button>
+      <button type='button' class='theme lsg-snw-bge' data-obj='{"bg": "lightslategrey", "fg": "snow", "tools": "beige"}'></button>
+      <button type='button' class='expand'></button>
+    </div>
   </div>
 </body>
 </html>
