@@ -3,42 +3,41 @@
 # used to test an echo server running on port 8880
 
 import socket
+import sys
 from threading import Thread
 
-# Create the socket object
-client_socket = socket.socket()
 
-# Assume the server is running on the same host as this client
-host = socket.gethostname()
+class Client:
 
-# Assume the server is running on port 8880
-port = 8880
+    def __init__(self, port=8888, host=socket.gethostname()):
+        self.sock = socket.socket()
 
-# Connect to the server
-client_socket.connect((host, port))
+        self.sock.connect((host, port))
 
-# This is the list of messages this client will send to the echo server
-name = raw_input("Please enter your nickname: ")
-client_socket.send('!name: '+name)
+        name = raw_input("Please enter your nickname: ")
+        self.sock.send('!name: '+name)
 
+        thread1 = Thread(target=self.loop_output)
+        thread2 = Thread(target=self.loop_input)
+        thread1.start()
+        thread2.start()
 
-def loop_input():
-    while True:
-        message = raw_input()
-        client_socket.send(message)
+    def loop_input(self):
+        while True:
+            message = raw_input()
+            self.sock.send(message)
+        self.sock.shutdown(socket.SHUT_RDWR)
+        self.sock.close()
 
+    def loop_output(self):
+        while True:
+            data = self.sock.recv(1024)
 
-def loop_output():
-    while True:
-        data = client_socket.recv(1024)
-        print data
+            if not data:
+                break
+            print data
+        self.sock.close()
+        sys.exit()
 
-thread1 = Thread(target=loop_output)
-thread2 = Thread(target=loop_input)
-thread1.start()
-thread2.start()
-while True:
-    loop_output()
-    loop_input()
-        # Always remember to close the socket
-client_socket.close()
+if __name__ == '__main__':
+    client = Client()
