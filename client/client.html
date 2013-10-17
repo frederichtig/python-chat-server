@@ -4,68 +4,127 @@
   <head>
     <title>Python Chat Client</title>
     <script type="text/javascript">
-      require(["dojo/query", "dojo/json", "dojo/domReady!"], function(query, json){
-        query('#Send').on('click', function() {
-          alert("I love fresh " + this.innerHTML);
-          //Here I put the connect statement
-        });
-        query('.theme').on('click', function() {
-          query('.theme.active').removeClass('active');
-          query(this).addClass('active');
+      var $, _;
+      require(["dojo/query", "dojo/json", "dojo/dom-construct", "dojo/domReady!"],
+      function(query, json, domConstruct){
+        $ = query;
+        _ = domConstruct
+        var Client = new Socket(880, 'localhost');
+        // Instantiate the Socket class passing port 880 and host to localhost.
+
+        $('.theme').on('click', function() {
+          $('.theme.active').removeClass('active');
+          $(this).addClass('active');
           var obj = json.parse(this.getAttribute("data-obj"));
-          query('#ChatWrapper').style('background-color', obj.bg);
-          query('#ChatWindow, #UserBar, #InputBox').style('background-color', obj.fg);
-          query('#Toolbox, #SendMessage').style('background-color', obj.tools);
+          $('#ChatWrapper').style('background-color', obj.bg);
+          $('#ChatWindow, #UserBar, #InputBox').style('background-color', obj.fg);
+          $('#Toolbox, #SendMessage').style('background-color', obj.tools);
+          return false;
+        });
+
+        $('.theme')[0].dispatchEvent(new Event('click'));
+
+        $('#Login').on('click', function() {
+          var val = $('#Username')[0];
+          if (val.value !== val.getAttribute('title')) Client.connect(val.value);
+          // Sends the method the entered nickname.
+
+          return false;
+        });
+
+        $('#Message').on('keypress', function(e){
+          if (e.charCode === 13) {
+            $('#Send')[0].dispatchEvent(new Event('click'));
+          }
+        });
+
+        $('#Send').on('click', function() {
+          var val = $('#Message')[0];          
+          if (val.value != val.getAttribute('title')) {
+            Client.send(val.value);
+            $('#Message')[0].value = val.getAttribute('title');
+          }
+          return false;
+        });
+
+        $('#Logout').on('click', function() {
+          Client.disconect();
+          return false;
+        });
+
+        $('input').on('click, focus', function() {
+          var val = this.value;
+          if (val === this.getAttribute('title')) this.value = '';
+        });
+
+        $('input').on('blur', function() {
+          var val = this.value;
+          if (val.trim() === '') this.value = this.getAttribute('title');
         });
       });
 
-    var ws = ""; /* So I can have a reference */
+    function Socket(port, host) {
+      this.port = typeof port === 'undefined' ? '8880' : port;
+      // Checks if the port argument was provided, if not default it to 8880.
+      this.host = typeof host === 'undefined' ? '127.0.0.1' : host;
+      // Checks if the host argument was provided, if not default it to localhost.
 
-    function connect() {
-      ws = new WebSocket("ws://localhost:8880/echo");
+      Socket.prototype.connect = function(name) {
+        this.sock = new WebSocket('ws://' + this.host + ':' + this.port + '/echo');
+        // Creates the websocket instance by passing the host and the port values.
 
-      ws.onopen = connected;
-      ws.onmessage = get_message;
-      ws.onclose = disconnected;
-    };
+        this.sock.username = name;
+        // Sets the username to the value passed to the method so when the
+        // connection opens we can send it to the server.
 
-    function connected(e) {
-      // var resultDiv = document.getElementById("result");
-      // var textAndButton = 'Sending "bye" will disconnect.<br/>Enter text: <input type="text" name="user_input" id="input"/> <input type="button" onclick="send_message()" value="Send"/>'
-      // resultDiv.innerHTML = textAndButton;
+        this.sock.onopen = this.connected
+        this.sock.onmessage = this.receive;
+        this.sock.onclose = this.disconnected;
+        // Sets a callback for each event of the WebSocket API.
+      };
 
-      // var resultList = document.createElement("ul");
-      // resultList.setAttribute("id", "result-list");
-      // resultDiv.appendChild(resultList);
+      Socket.prototype.disconect = function() {
+        this.sock.close();
+        // Closes the websocket.
+      };
 
-      // var mainDiv = document.getElementById("echo_test");
-      // var connectButton = document.getElementById("connect-button");
-      // mainDiv.removeChild(connectButton);
-      // console.log(e);
-    };
+      Socket.prototype.disconnected = function() {
+        $('#ChatOverlay').style('display', 'block');
+        // Shows the login overlay.
+      };
 
-    function disconnected() {
-      // alert("Connection is closed..."); 
-    };
+      Socket.prototype.connected = function() {
+        this.send('!name: ' + this.username);
+        // Send the command and the username so the server can set it.
+        $('#ChatOverlay').style('display', 'none');
+        // Hides the login overlay.
+      };
 
-    function get_message(event) {
-      // var reader = new FileReader();
-      // reader.addEventListener("loadend", function() {
-      //     var newItem = document.createElement('li');
-      //     newItem.innerHTML = reader.result;
-      //     document.getElementById("result-list").appendChild(newItem);
-      // });
-      // reader.readAsText(event.data);
-    };
+      Socket.prototype.receive = function(e) {
+        var reader = new FileReader();
+        // We need to use the FileReader API because the received data is
+        // in Blob type, it cannot be printed on the screen because it's
+        // in binary form.
+        reader.addEventListener('loadend', function() {
+          // When the API finishes reading the data.
+          var message = _.create('span');
+          // Creates a new span element.
+          message.setAttribute('class', 'message');
+          // Sets its class to message.
+          message.innerHTML = reader.result;
+          // Sets its content to the result of the API's callback.
+          _.place(message, $('#ChatMessages')[0]);
+          // Use the domConstruct to append the new message to the Chat window.
+        });
+        reader.readAsText(e.data);
+        // Pass the arguments to the API.
+      };
 
-    function send_message() {
-      // console.log(ws);
-      // var textArea = document.getElementById("input");
-      // var message = textArea.value;
-      // textArea.value = "";
-
-      // ws.send(message);
-    };
+      Socket.prototype.send = function(message) {
+        this.sock.send(message);
+        // Sends the passed message through the opened websocket.
+      };
+    }
 </script>
 <style>
   body {
@@ -101,6 +160,15 @@
     padding: 5px;
   }
 
+  .actionButton {
+    letter-spacing: -.5px;
+    text-transform: uppercase;
+    font-size: 18px;
+    width: 79px;
+    background-color: lightslategray;
+    color: seashell;
+  }
+
   #Head {
     background-color: lightslategrey;
     width: 100%;
@@ -120,6 +188,36 @@
     height: 400px;
     border: 1px dashed #CCC;
     padding: 15px;
+    position: relative;
+  }
+
+  #ChatOverlay {
+    position: absolute;
+    background-color: rgba(0,0,0,.8);
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+  }
+
+  #LoginBox {
+    position: relative;
+    background-color: white;
+    padding: 15px;
+    top: 50%;
+    margin-top: -36px;
+  }
+
+  #Username {
+    padding: 7px 20px;
+    border: 0;
+    font-size: 18px;
+    color: dimgrey;
+    border: 1px solid #E4E4E4;
+  }
+
+  #Login {
+    padding: 8px;
   }
 
   #ChatWindow {
@@ -127,6 +225,17 @@
     height: 300px;
     border: 1px solid #DDD;
   }
+
+  #ChatMessages {
+    height: 292px;
+    overflow-x: auto;
+  }
+
+    #ChatMessages .message {
+      display: block;
+      width: 100%;
+      padding: 3px 0;
+    }
 
   #UserBar {
     border: 1px solid #DDD;
@@ -193,14 +302,8 @@
   }
 
   #Send {
-    background: lightslategray;
-    font-size: 18px;
     height: 60px;
-    width: 79px;
-    color: whitesmoke;
-    text-transform: uppercase;
     margin: 10px;
-    letter-spacing: -.5px;
   }
 
   #ThemeBar {
@@ -248,28 +351,28 @@
         margin: 0 0 0 50px;
       }
 
-  #ThemeBar button.lcl-lsg-dsg {
-    background-color: lightcoral;
+  #ThemeBar button.theme1 {
+    background-color: darkgrey;
   }
 
-    #ThemeBar button.lcl-lsg-dsg:after {
-      background-color: lightseagreen;
+    #ThemeBar button.theme1:after {
+      background-color: lavenderblush;
     }
 
-    #ThemeBar button.lcl-lsg-dsg:before {
-      background-color: darkseagreen;
+    #ThemeBar button.theme1:before {
+      background-color: slategray;
     }
 
-  #ThemeBar button.lsg-snw-bge {
+  #ThemeBar button.theme2 {
     background-color: lightslategrey;
   }
 
-    #ThemeBar button.lsg-snw-bge:after {
+    #ThemeBar button.theme2:after {
       background-color: snow;
     }
 
-    #ThemeBar button.lsg-snw-bge:before {
-      background-color: beige;
+    #ThemeBar button.theme2:before {
+      background-color: darkgrey;
     }
 </style>
 </head>
@@ -283,22 +386,31 @@
     <h1>Python Chat Client</h1>
   </div>
   <div id='ChatWrapper'>
+    <div id='ChatOverlay'>
+      <div id='LoginBox'>
+        <input type='text' id='Username' value='Type in your username!' title='Type in your username!'>
+        <button type='button' id='Login' class='actionButton'>Send</button>
+      </div>
+    </div>
     <div class='row'>
       <div id='ChatWindow' class='l'>
         <div class='pad'>
-          <p>asgasgasg</p>
+          <div id='ChatMessages'>
+            <span class='message'>Fuias</span>
+            <span class='message'>asfasf</span>
+          </div>
         </div>
       </div>
       <div id='UserBar' class='r'>
         <ul id='UserList'>
           <li>
-            <a href='#' class='user' title='Fred'>Fred</a>
+            <a href='#' class='user' title='Fred'>User Online</a>
           </li>
           <li>
-            <a href='#' class='user' title='Isabella'>Isabella</a>
+            <a href='#' class='user' title='Isabella'>User Busy</a>
           </li>
           <li>
-            <a href='#' class='user' title='Filipo'>Filipo</a>
+            <a href='#' class='user' title='Filipo'>User Away</a>
           </li>
         </ul>
       </div>
@@ -318,20 +430,20 @@
           </div>
         </div>
         <div id='InputBox' class='row'>
-          <input id='Message' type='text' title='Write something!'>
+          <input id='Message' type='text' value='Write something!' title='Write something!'>
         </div>
       </div>
       <div class='row'>
         <div id='SendMessage'>
-            <button type='button' id='Send' value='Send'>Send</button>
+            <button type='button' id='Send' class='actionButton' value='Send'>Send</button>
         </div>
       </div>
     </div>
   </div>
   <div id='ThemeBar'>
     <div class='row'>
-      <button type='button' class='theme lcl-lsg-dsg' data-obj='{"bg": "lightcoral", "fg": "lightseagreen", "tools": "darkseagreen"}'></button>
-      <button type='button' class='theme lsg-snw-bge' data-obj='{"bg": "lightslategrey", "fg": "snow", "tools": "beige"}'></button>
+      <button type='button' class='theme theme1' data-obj='{"bg": "darkgrey", "fg": "lavenderblush", "tools": "slategrey"}'></button>
+      <button type='button' class='theme theme2' data-obj='{"bg": "lightslategrey", "fg": "snow", "tools": "darkgrey"}'></button>
       <button type='button' class='expand'></button>
     </div>
   </div>
