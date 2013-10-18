@@ -23,21 +23,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="server.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/server/server.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="139" column="34" selection-start="6228" selection-end="6228" vertical-scroll-proportion="4.6699605" vertical-offset="0" max-vertical-offset="2618">
-              <folding>
-                <element signature="e#257#270#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="testServer.py" pinned="false" current="false" current-in-tab="false">
+      <file leaf-file-name="testServer.py" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/server/testServer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="18" column="33" selection-start="522" selection-end="522" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="493">
+            <state line="29" column="21" selection-start="869" selection-end="869" vertical-scroll-proportion="0.57259" vertical-offset="0" max-vertical-offset="861">
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -45,13 +34,20 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="server.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/server/server.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="153" column="51" selection-start="6642" selection-end="6642" vertical-scroll-proportion="0.0" vertical-offset="2601" max-vertical-offset="2703">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="client.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/client/client.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="28" column="18" selection-start="947" selection-end="978" vertical-scroll-proportion="0.0" vertical-offset="157" max-vertical-offset="1479">
-              <folding>
-                <element signature="e#127#140#0" expanded="true" />
-              </folding>
+            <state line="78" column="0" selection-start="2791" selection-end="2791" vertical-scroll-proportion="0.0" vertical-offset="1326" max-vertical-offset="1445">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -68,17 +64,17 @@
       <list>
         <option value="$PROJECT_DIR$/server/echo_server.py" />
         <option value="$PROJECT_DIR$/client/client.html" />
-        <option value="$PROJECT_DIR$/server/server.py" />
         <option value="$PROJECT_DIR$/client/client.py" />
+        <option value="$PROJECT_DIR$/server/server.py" />
         <option value="$PROJECT_DIR$/server/testServer.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1456" />
-    <option name="height" value="876" />
+    <option name="x" value="-4" />
+    <option name="y" value="-4" />
+    <option name="width" value="1288" />
+    <option name="height" value="1008" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -106,6 +102,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -144,7 +141,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -156,7 +152,7 @@
       <PyConsoleSettings />
     </option>
   </component>
-  <component name="RunManager" selected="Python tests.Unittests in testServer">
+  <component name="RunManager" selected="Python tests.Unittest Tests.test_two">
     <configuration default="false" name="client" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -217,24 +213,6 @@
       <ConfigurationWrapper RunnerId="PythonRunner" />
       <method />
     </configuration>
-    <configuration default="false" name="testServer" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/server" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="Python Chat Server" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/server/testServer.py" />
-      <option name="PARAMETERS" value="" />
-      <RunnerSettings RunnerId="PythonRunner" />
-      <ConfigurationWrapper RunnerId="PythonRunner" />
-      <method />
-    </configuration>
     <configuration default="false" name="Unittests in testServer" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -250,6 +228,32 @@
       <option name="METHOD_NAME" value="" />
       <option name="FOLDER_NAME" value="" />
       <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <option name="PUREUNITTEST" value="true" />
+      <option name="PARAMS" value="" />
+      <option name="USE_PARAM" value="false" />
+      <RunnerSettings RunnerId="PyDebugRunner" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PyDebugRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Unittest Tests.test_two" type="tests" factoryName="Unittests" temporary="true" nameIsGenerated="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/server" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="Python Chat Server" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/server/testServer.py" />
+      <option name="CLASS_NAME" value="Tests" />
+      <option name="METHOD_NAME" value="test_two" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_METHOD" />
       <option name="PATTERN" value="" />
       <option name="USE_PATTERN" value="false" />
       <option name="PUREUNITTEST" value="true" />
@@ -384,14 +388,14 @@
       <item index="0" class="java.lang.String" itemvalue="Python.client" />
       <item index="1" class="java.lang.String" itemvalue="Python.server" />
       <item index="2" class="java.lang.String" itemvalue="Python tests.Unittest Tests.test_one" />
-      <item index="3" class="java.lang.String" itemvalue="Python.testServer" />
-      <item index="4" class="java.lang.String" itemvalue="Python tests.Unittests in testServer" />
+      <item index="3" class="java.lang.String" itemvalue="Python tests.Unittests in testServer" />
+      <item index="4" class="java.lang.String" itemvalue="Python tests.Unittest Tests.test_two" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python tests.Unittests in testServer" />
-        <item index="1" class="java.lang.String" itemvalue="Python tests.Unittest Tests.test_one" />
-        <item index="2" class="java.lang.String" itemvalue="Python.testServer" />
+        <item index="0" class="java.lang.String" itemvalue="Python tests.Unittest Tests.test_two" />
+        <item index="1" class="java.lang.String" itemvalue="Python tests.Unittests in testServer" />
+        <item index="2" class="java.lang.String" itemvalue="Python tests.Unittest Tests.test_one" />
         <item index="3" class="java.lang.String" itemvalue="Python.client" />
         <item index="4" class="java.lang.String" itemvalue="Python.server" />
       </list>
@@ -444,18 +448,18 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1456" height="876" extended-state="6" />
+    <frame x="-4" y="-4" width="1288" height="1008" extended-state="6" />
     <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3293011" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3293011" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24982357" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.12702893" sideWeight="0.71505374" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.1265625" sideWeight="0.7158963" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3990981" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.30376345" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3293011" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28494623" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" x="0" y="324" width="1440" height="212" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.28410372" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" x="0" y="324" width="1440" height="212" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -480,28 +484,64 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/server/server.py">
       <provider selected="true" editor-type-id="text-editor">
+        <state line="30" column="11" selection-start="964" selection-end="964" vertical-scroll-proportion="0.0" vertical-offset="510" max-vertical-offset="2601">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/client.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="50" column="18" selection-start="1847" selection-end="1847" vertical-scroll-proportion="0.0" vertical-offset="850" max-vertical-offset="1479">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/server.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="148" column="34" selection-start="6473" selection-end="6473" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2601">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/client.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="50" column="18" selection-start="1847" selection-end="1847" vertical-scroll-proportion="0.0" vertical-offset="850" max-vertical-offset="1479">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/server.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="67" column="34" selection-start="2068" selection-end="2068" vertical-scroll-proportion="0.0" vertical-offset="1122" max-vertical-offset="1224">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/client/client.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="28" column="18" selection-start="947" selection-end="978" vertical-scroll-proportion="0.0" vertical-offset="476" max-vertical-offset="816">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/server.py">
+      <provider selected="true" editor-type-id="text-editor">
         <state line="49" column="29" selection-start="1538" selection-end="1538" vertical-scroll-proportion="0.0" vertical-offset="17" max-vertical-offset="1241">
-          <folding>
-            <element signature="e#257#270#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/server/server.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="18" column="0" selection-start="395" selection-end="395" vertical-scroll-proportion="0.0" vertical-offset="306" max-vertical-offset="1071">
-          <folding>
-            <element signature="e#257#270#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/server/server.py">
       <provider selected="true" editor-type-id="text-editor">
         <state line="35" column="28" selection-start="1059" selection-end="1059" vertical-scroll-proportion="0.0" vertical-offset="119" max-vertical-offset="1088">
-          <folding>
-            <element signature="e#257#270#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -512,48 +552,38 @@
     </entry>
     <entry file="file://C:/Python27/Lib/socket.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="223" column="0" selection-start="7712" selection-end="7712" vertical-scroll-proportion="0.22005571" vertical-offset="3582" max-vertical-offset="9792">
-          <folding />
-        </state>
+        <state line="223" column="0" selection-start="7712" selection-end="7712" vertical-scroll-proportion="0.22005571" vertical-offset="3582" max-vertical-offset="9792" />
       </provider>
     </entry>
     <entry file="file://$USER_HOME$/.PyCharm30/system/python_stubs/-762174762/_socket.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="350" column="11" selection-start="8116" selection-end="8123" vertical-scroll-proportion="0.33264032" vertical-offset="5790" max-vertical-offset="10982">
-          <folding />
-        </state>
+        <state line="350" column="11" selection-start="8116" selection-end="8123" vertical-scroll-proportion="0.33264032" vertical-offset="5790" max-vertical-offset="10982" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/client.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="324" column="4" selection-start="14889" selection-end="14889" vertical-scroll-proportion="0.63811564" vertical-offset="5210" max-vertical-offset="6664">
-          <folding />
-        </state>
+        <state line="324" column="4" selection-start="14889" selection-end="14889" vertical-scroll-proportion="0.63811564" vertical-offset="5210" max-vertical-offset="6664" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/client/client.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="18" selection-start="947" selection-end="978" vertical-scroll-proportion="0.0" vertical-offset="259" max-vertical-offset="1479">
-          <folding>
-            <element signature="e#127#140#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/server/testServer.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="33" selection-start="522" selection-end="522" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="493">
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
+        <state line="78" column="0" selection-start="2791" selection-end="2791" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1445">
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/server/server.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="139" column="34" selection-start="6228" selection-end="6228" vertical-scroll-proportion="4.6699605" vertical-offset="0" max-vertical-offset="2618">
+        <state line="153" column="51" selection-start="6642" selection-end="6642" vertical-scroll-proportion="0.0" vertical-offset="2026" max-vertical-offset="2703">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/server/testServer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="29" column="21" selection-start="869" selection-end="869" vertical-scroll-proportion="0.57259" vertical-offset="0" max-vertical-offset="861">
           <folding>
-            <element signature="e#257#270#0" expanded="true" />
+            <element signature="e#0#15#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -8,8 +8,8 @@ from threading import Thread
 
 class Client:
 
-    def __init__(self, port=888, host=socket.gethostname()):
-        """(int, string)
+    def __init__(self, host=socket.gethostname(), port=888):
+        """(str, int)
 
         Sets default values for port in which the socket will connect
         to 888, and the host to the current running the script.
@@ -38,7 +38,6 @@ class Client:
 
     def loop_input(self):
         """
-        This is a static method.
         It handles user input to the server.
         """
         while True:
@@ -54,7 +53,6 @@ class Client:
 
     def loop_output(self):
         """
-        This is a static method.
         It handles user output to the screen.
         """
         while True:
