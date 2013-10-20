@@ -5,8 +5,7 @@
 # the server. It also handles users disconnection and chat commands.
 
 import socket
-#from threading import Thread
-import threading
+from threading import Thread
 
 
 class Server:
@@ -18,46 +17,51 @@ class Server:
         instantiation.
         """
 
-        self.host = host
-        self.port = port
-        self.RUNNING = True
-
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # The first argument is the address family (IPv4), the second is
         # the socket type.
-        sock.bind((self.host, self.port))
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
         # Binds the port and host to the created socket.
-        sock.listen(1)
-        # Blocking method that checks for connections on the socket.
-        self.clients = {}
+        self.sock.bind((host, port))
+
         # Initializes the client list dictionary to handle individuals.
-        self.threads = []
+        self.clients = {}
+
+    def run(self):
+
+        # Blocking method that checks for connections on the socket.
+        self.sock.listen(1)
 
         print "Server ready to receive connection"
 
-        while self.RUNNING:
         # Loops forever so that when the block is executed the program doesn't end.
+        while True:
 
-            user, address = sock.accept()
             # Blocking method that accepts connection on the socket listening.
             # The first argument is the client socket, the second is the address
             # bound for that client.
-            self.clients[user] = ''
+            user, address = self.sock.accept()
+
             # Creates the entry for the user in the client list but do not set a
             # name for the socket yet, because message handler is on another
             # block.
-            user.send('Welcome!\n')
+            self.clients[user] = ''
+
             # Greets the user.
-            print 'New connection by ', user
+            user.send('Welcome!\n')
+
             # Print the socket to the server just for control purposes.
-            thread = threading.Thread(target=self.client_handler, args=(user, address))
+            print 'New connection by ', user
+
             # Start a new thread for each client so that each one can have its own
             # handling. The first arg is the user socket, the second its address.
-            thread.start()
-            # Start the thread and executes the client handling.
+            thread = Thread(target=self.client_handler, args=(user, address))
 
-        sock.close()
+            # Start the thread and executes the client handling.
+            thread.start()
+
         # If the loop breaks the socket is closed.
+        self.sock.close()
 
     def client_handler(self, s, a):
         """(Socket, tuple)
@@ -66,69 +70,94 @@ class Server:
         other connected members. It also checks if received data is a command
         and executes the appropriate action for its caller.
         """
-        while self.RUNNING:
+
         # Loops forever so that the we always listen for data from the client.
-            try:
+        while True:
+
             # Uses a try block so that when the data throws an exception it gets
             # handled, making the server not crash.
-                data = s.recv(1024)
+            try:
+
                 # Blocking method that listen for incoming data, it listens
                 # for at most 1024 bytes at once.
+                data = s.recv(1024)
                 print data
-            except:
+
             # Usually data throws an exception when the user forcefully
             # disconnects or when the user exits the terminal (KeyboardInterrupt).
-                break
+            except:
+
                 # Ends the loop.
-            else:
+                break
+
             # If not exception is thrown.
-                if data:
+            else:
+
                 # Checks if there's any data.
-                    if data.startswith("!"):
+                if data:
+
                     # Checks if the data starts with a '!' (Command sign).
-                        if data[data.index("!")+1:5] == 'name':
+                    if data.startswith("!"):
+
                         # Checks if the the string contains 'name' after the '!'.
-                            name = data[data.index(":")+2:]
+                        if data[data.index("!")+1:5] == 'name':
+
                             # Sets the variable name to anything after the colon.
-                            self.msg_send('', name + ' just got in.')
+                            name = data[data.index(":")+2:]
+
                             # Send a message to all users that the user with the
                             # name set above entered the chat.
-                            self.clients[s] = name
+                            self.msg_send('', name + ' just got in.')
+
                             # Updates the client list with the set name.
-                        elif data[data.index("!")+1:8] == 'members':
+                            self.clients[s] = name
+
                         # Otherwise checks if it contains 'members'.
-                            members = [self.clients[c] for c in self.clients]
+                        elif data[data.index("!")+1:8] == 'members':
+
                             # Creates a list with every client name in the clients
                             # list, leaving out the socket objects.
-                            s.send(', '.join(members))
+                            members = [self.clients[c] for c in self.clients]
+
                             # Send the user the list of connected members.
-                        elif 'quit' == data[data.index("!")+1:5]:
+                            s.send(', '.join(members))
+
                         # Otherwise if the string contains quit.
-                            break
+                        elif 'quit' == data[data.index("!")+1:5]:
+
                             # Exit the loop so that closing can occur.
+                            break
+
                         else:
-                            s.send('Unavailable command')
                             # Sends the user a warning that the command is
                             # not found.
-                    else:
+                            s.send('Unavailable command')
+
                     # If data is not a command.
-                        self.msg_send(self.clients[s], " says: " + data)
+                    else:
+
                         # Sends all the users the received message and the sender.
-                else:
+                        self.msg_send(self.clients[s], " says: " + data)
+
                 # If there's no data or it returns false we know that the client
                 # is not connected anymore.
-                    break
-                    # Ends the loop.
+                else:
 
-        s.close()
+                    # Ends the loop.
+                    break
+
         # Closes the client socket.
-        username = self.clients[s]
+        s.close()
+
         # Sets a reference so that we can pass it to a function when it gets
         # deleted.
-        del self.clients[s]
+        username = self.clients[s]
+
         # Delete the client entry from the client list.
-        self.msg_send('', username + ' just left.')
+        del self.clients[s]
+
         # Emits a warning to all members that the user has left.
+        self.msg_send('', username + ' just left.')
 
     def msg_send(self, s, message):
         """(Socket, string)
@@ -138,17 +167,21 @@ class Server:
         If it is a system message the (s) can be an empty string.
         """
 
+        # Iterates on the client list.
         for user in self.clients:
-        # Iterates on the client list
+
+            # Uses the client's socket to send the message.
             user.send(s + message)
-            # Uses the client's socket to send the message
 
-    def __close__(self):
-        self.RUNNING = False
-
-if __name__ == '__main__':
 # If running the script by itself the block gets executed.
+if __name__ == '__main__':
     import doctest
     doctest.testmod()
+
+    # Instantiates the server class.
     server = Server()
-    # Instantiates and initialize the server class.
+
+    # Run the server.
+    server.run()
+
+

@@ -8,9 +8,10 @@
       require(["dojo/query", "dojo/json", "dojo/dom-construct", "dojo/domReady!"],
       function(query, json, domConstruct){
         $ = query;
-        _ = domConstruct
-        var Client = new Socket(880, 'localhost');
+        _ = domConstruct;
+        
         // Instantiate the Socket class passing port 880 and host to localhost.
+        var Client = new Socket(880, 'localhost');
 
         $('.theme').on('click', function() {
           $('.theme.active').removeClass('active');
@@ -26,8 +27,9 @@
 
         $('#Login').on('click', function() {
           var val = $('#Username')[0];
-          if (val.value !== val.getAttribute('title')) Client.connect(val.value);
+
           // Sends the method the entered nickname.
+          if (val.value !== val.getAttribute('title')) Client.connect(val.value);
 
           return false;
         });
@@ -64,65 +66,80 @@
       });
 
     function Socket(port, host) {
-      this.port = typeof port === 'undefined' ? '8880' : port;
+
       // Checks if the port argument was provided, if not default it to 8880.
-      this.host = typeof host === 'undefined' ? '127.0.0.1' : host;
+      this.port = typeof port === 'undefined' ? '8880' : port;
+
       // Checks if the host argument was provided, if not default it to localhost.
+      this.host = typeof host === 'undefined' ? '127.0.0.1' : host;
 
       Socket.prototype.connect = function(name) {
-        this.sock = new WebSocket('ws://' + this.host + ':' + this.port + '/echo');
-        // Creates the websocket instance by passing the host and the port values.
 
-        this.sock.username = name;
+        // Creates the websocket instance by passing the host and the port values.
+        this.sock = new WebSocket('ws://' + this.host + ':' + this.port + '/echo');
+
         // Sets the username to the value passed to the method so when the
         // connection opens we can send it to the server.
+        this.sock.username = name;
 
+        // Sets a callback for each event of the WebSocket API.
         this.sock.onopen = this.connected
         this.sock.onmessage = this.receive;
         this.sock.onclose = this.disconnected;
-        // Sets a callback for each event of the WebSocket API.
       };
 
       Socket.prototype.disconect = function() {
-        this.sock.close();
+
         // Closes the websocket.
+        this.sock.close();
       };
 
       Socket.prototype.disconnected = function() {
-        $('#ChatOverlay').style('display', 'block');
+
         // Shows the login overlay.
+        $('#ChatOverlay').style('display', 'block');
       };
 
       Socket.prototype.connected = function() {
-        this.send('!name: ' + this.username);
+
         // Send the command and the username so the server can set it.
-        $('#ChatOverlay').style('display', 'none');
+        this.send('!name: ' + this.username);
+
         // Hides the login overlay.
+        $('#ChatOverlay').style('display', 'none');
       };
 
       Socket.prototype.receive = function(e) {
-        var reader = new FileReader();
+
         // We need to use the FileReader API because the received data is
         // in Blob type, it cannot be printed on the screen because it's
         // in binary form.
+        var reader = new FileReader();
+
+        // When the API finishes reading the data.
         reader.addEventListener('loadend', function() {
-          // When the API finishes reading the data.
-          var message = _.create('span');
+
           // Creates a new span element.
-          message.setAttribute('class', 'message');
+          var message = _.create('span');
+
           // Sets its class to message.
-          message.innerHTML = reader.result;
+          message.setAttribute('class', 'message');
+
           // Sets its content to the result of the API's callback.
-          _.place(message, $('#ChatMessages')[0]);
+          message.innerHTML = reader.result;
+
           // Use the domConstruct to append the new message to the Chat window.
+          _.place(message, $('#ChatMessages')[0]);
         });
-        reader.readAsText(e.data);
+
         // Pass the arguments to the API.
+        reader.readAsText(e.data);
       };
 
       Socket.prototype.send = function(message) {
-        this.sock.send(message);
+
         // Sends the passed message through the opened websocket.
+        this.sock.send(message);
       };
     }
 </script>
