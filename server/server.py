@@ -10,7 +10,7 @@ from threading import Thread
 
 class Server:
 
-    def __init__(self, host='0.0.0.0', port=888):
+    def __init__(self, port=888, host='0.0.0.0'):
         """(str, int)
         Set default values to 0.0.0.0, and port to
         888, it can be changed on the class
@@ -172,6 +172,9 @@ class Server:
 
             # Uses the client's socket to send the message.
             user.send(s + message)
+
+    def __close__(self):
+        self.sock.close()
 
 # If running the script by itself the block gets executed.
 if __name__ == '__main__':

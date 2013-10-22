@@ -8,7 +8,7 @@ from server import Server
 class Tests(unittest.TestCase):
 
     def test_one(self):
-        port = randint(2000,6000)
+        port = 889
         # Here I use random port number so that I don't have to change
         # everytime I test. Sometimes the socket takes too long to close.
         host = 'localhost'
@@ -23,9 +23,10 @@ class Tests(unittest.TestCase):
         # Listens for the welcome message from the server.
         self.assertEqual(data, 'Welcome!\n')
         # If the message is a Welcome followed by a new line it pass.
+        thread.__close__()
 
     def test_two(self):
-        port = randint(2000,6000)
+        port = 889
         # Again I use random port number so that it doesn't conflict to the
         # previous opened socket.
         host = 'localhost'
@@ -44,6 +45,7 @@ class Tests(unittest.TestCase):
         # Receives a list of members on the room.
         self.assertEqual(data, 'test')
         # If it returns just the name test it pass.
+        thread.__close__()
 
 
 if __name__ == '__main__':
