@@ -72,3 +72,8 @@ I recommend using the Kaazing WebSocket Gateway.
 * `<connect>tcp://localhost:8880</connect>` is the address it will redirect those connections.
 
 Make sure you run the server before the client.
+
+License
+=================
+
+Python chat server is released under the [WTFPL](http://www.wtfpl.net/txt/copying/).
