@@ -28,16 +28,22 @@ automatically start.
 
 If you run it by the first option you can
 specify which port to use.
+
 `Ex.: 'server = Server(888)'`
+
 Make sure you use an available port, otherwise
 the server will not run.
 
 By the second option it creates the server
 with the default port 888.
 
-These steps are also true for the client
+These steps also work for the client
 script, just change 'Server/server' with
-'Client/client'.
+'Client/client'. However you can specify a
+second argument on the object creation that
+will refer to the host address, if you leave
+it blank it will presume the server is running
+on the same address.
 
 ### HTML5 Version
 
@@ -51,21 +57,18 @@ I recommend using the Kaazing WebSocket Gateway.
 * Choose the Custom Edition, download and install it.
 * On the installation path find the 'gateway-config-minimal.xml' file.
 * Add the following lines to it:
-`<service>
-    <accept>ws://localhost:8888/echo</accept>
-    <connect>tcp://localhost:8880</connect>
+```
+<service>
+    <accept>ws://localhost:888/echo</accept>
+    <connect>tcp://localhost:880</connect>
     <type>proxy</type>
     <cross-site-constraint>
         <allow-origin>*</allow-origin>
     </cross-site-constraint>
-</service>`
+</service>
+```
 
 * `<accept>ws://localhost:8888/echo</accept>` is the address it receives incoming connections.
 * `<connect>tcp://localhost:8880</connect>` is the address it will redirect those connections.
 
 Make sure you run the server before the client.
-
-License
-=================
-
-Python chat server is released under the [WTFPL](http://www.wtfpl.net/txt/copying/).
