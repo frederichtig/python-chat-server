@@ -6,7 +6,7 @@ import socket
 from threading import Thread
 
 
-class Client:
+class Client(Thread):
 
     def __init__(self, port=888, host=socket.gethostname()):
         """(str, int)
@@ -15,6 +15,13 @@ class Client:
         to 888, and the host to the current running the script.
         It can be changed on the class instantiation.
         """
+
+        # Initiates the Thread class when the Server class is instantiated.
+        super(Client, self).__init__()
+
+        # Variable used by loops to check if it should continue (client is
+        # connected).
+        self.running = True
 
         self.host = host
         self.port = port
@@ -53,7 +60,7 @@ class Client:
         """
 
         # Loops the input so that the user can constantly type.
-        while True:
+        while self.running:
 
             # Reads the user input to the console.
             message = raw_input()
@@ -61,19 +68,13 @@ class Client:
             # Send the server the entered message without any filtering.
             self.sock.send(message)
 
-        # Shutdown reading (RD) and writing (WR) side of the socket.
-        self.sock.shutdown(socket.SHUT_RDWR)
-
-        # Close the socket so it can't be used anymore.
-        self.sock.close()
-
     def loop_output(self):
         """
         It handles user output to the screen.
         """
 
         # Loops forever until no data is received.
-        while True:
+        while self.running:
 
             # Blocking method that listen for incoming data, it listens
             # for at most 1024 bytes at once.
@@ -88,11 +89,16 @@ class Client:
             # Print the received data to the screen.
             print data
 
+    def __close__(self):
         # Shutdown reading (RD) and writing (WR) side of the socket.
         self.sock.shutdown(socket.SHUT_RDWR)
 
         # Close the socket so it can't be used anymore.
         self.sock.close()
+
+        # Sets the running condition to false so that a loop knows
+        # that the client is disconnected.
+        self.running = False
 
 # If running the script by itself the block gets executed.
 if __name__ == '__main__':

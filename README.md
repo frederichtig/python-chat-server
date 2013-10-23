@@ -59,8 +59,8 @@ I recommend using the Kaazing WebSocket Gateway.
 * Add the following lines to it:
 ```
 <service>
-    <accept>ws://localhost:8888/echo</accept>
-    <connect>tcp://localhost:8880</connect>
+    <accept>ws://localhost:888/echo</accept>
+    <connect>tcp://localhost:880</connect>
     <type>proxy</type>
     <cross-site-constraint>
         <allow-origin>*</allow-origin>

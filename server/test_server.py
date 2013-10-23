@@ -5,8 +5,8 @@ from server import Server
 
 class Tests(unittest.TestCase):
 
-    def test_one(self):
-        port = 890
+    def create_server(self):
+        port = 888
         host = 'localhost'
 
         # Creates a new instant of the Server class, it will also inherit
@@ -25,6 +25,14 @@ class Tests(unittest.TestCase):
         # Send the server a command setting the name to 'test'.
         self.sock.send('!name: test')
 
+        # Returns the server object.
+        return server
+
+    def test_one(self):
+
+        # Creates the server. Just a form of code abstraction.
+        server = self.create_server()
+
         # Listens for the welcome message from the server.
         data = self.sock.recv(1024)
 
@@ -39,13 +47,7 @@ class Tests(unittest.TestCase):
         server.__close__()
 
     def test_two(self):
-        port = 890
-        host = 'localhost'
-        server = Server(port)
-        server.start()
-        self.sock = socket.socket()
-        self.sock.connect((host, port))
-        self.sock.send('!name: test')
+        server = self.create_server()
 
         # Listens for the welcome message from the server.
         data = self.sock.recv(1024)

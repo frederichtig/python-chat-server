@@ -21,8 +21,12 @@ class Server(Thread):
         888, it can be changed on the class
         instantiation.
         """
+
+        # Initiates the Thread class when the Server class is instantiated.
         super(Server, self).__init__()
 
+        # Variable used by loops to check if it should continue (server is
+        # running).
         self.running = True
 
         # The first argument is the address family (IPv4), the second is
@@ -63,7 +67,7 @@ class Server(Thread):
             user.send('Welcome!\n')
 
             # Print the socket to the server just for control purposes.
-            print 'New connection by ', user
+            print 'New connection by address {} on port {}'.format(address[0], address[1])
 
             # Start a new thread for each client so that each one can have its own
             # handling. The first arg is the user socket, the second its address.
@@ -140,7 +144,7 @@ class Server(Thread):
                         else:
                             # Sends the user a warning that the command is
                             # not found.
-                            s.send('Unavailable command')
+                            user.send('Unavailable command')
 
                     # If data is not a command.
                     else:
@@ -184,8 +188,8 @@ class Server(Thread):
 
     def __close__(self):
 
-        # Sets the running condition to false so that when it
-        # a loop knows that the server is closed.
+        # Sets the running condition to false so that a loop knows
+        # that the server is closed.
         self.running = False
 
         # Closes the socket.
