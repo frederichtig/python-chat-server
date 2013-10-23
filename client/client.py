@@ -8,7 +8,7 @@ from threading import Thread
 
 class Client:
 
-    def __init__(self, host=socket.gethostname(), port=888):
+    def __init__(self, port=888, host=socket.gethostname()):
         """(str, int)
 
         Sets default values for port in which the socket will connect

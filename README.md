@@ -39,7 +39,11 @@ with the default port 888.
 
 These steps also work for the client
 script, just change 'Server/server' with
-'Client/client'.
+'Client/client'. However you can specify a
+second argument on the object creation that
+will refer to the host address, if you leave
+it blank it will presume the server is running
+on the same address.
 
 ### HTML5 Version
 

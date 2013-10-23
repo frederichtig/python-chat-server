@@ -8,7 +8,12 @@ import socket
 from threading import Thread
 
 
-class Server:
+class Server(Thread):
+    """
+    This class inherits from the Thread object, so you can instantiate it
+    and run it normally, calling run(), or you can run it as a new thread,
+    calling start().
+    """
 
     def __init__(self, port=888, host='0.0.0.0'):
         """(str, int)
@@ -16,10 +21,17 @@ class Server:
         888, it can be changed on the class
         instantiation.
         """
+        super(Server, self).__init__()
+
+        self.running = True
 
         # The first argument is the address family (IPv4), the second is
         # the socket type.
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+        # Sets an option to the socket to don't enter in a time wait
+        # state and make the address available right away.
+        self.sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
         # Binds the port and host to the created socket.
         self.sock.bind((host, port))
@@ -35,7 +47,7 @@ class Server:
         print "Server ready to receive connection"
 
         # Loops forever so that when the block is executed the program doesn't end.
-        while True:
+        while self.running:
 
             # Blocking method that accepts connection on the socket listening.
             # The first argument is the client socket, the second is the address
@@ -60,11 +72,8 @@ class Server:
             # Start the thread and executes the client handling.
             thread.start()
 
-        # If the loop breaks the socket is closed.
-        self.sock.close()
-
-    def client_handler(self, s, a):
-        """(Socket, tuple)
+    def client_handler(self, user, a):
+        """(Socket)
 
         This method will handle clients incoming messages and pass them to all
         other connected members. It also checks if received data is a command
@@ -80,7 +89,7 @@ class Server:
 
                 # Blocking method that listen for incoming data, it listens
                 # for at most 1024 bytes at once.
-                data = s.recv(1024)
+                data = user.recv(1024)
                 print data
 
             # Usually data throws an exception when the user forcefully
@@ -107,10 +116,10 @@ class Server:
 
                             # Send a message to all users that the user with the
                             # name set above entered the chat.
-                            self.msg_send('', name + ' just got in.')
+                            self.sendall('', name + ' just got in.')
 
                             # Updates the client list with the set name.
-                            self.clients[s] = name
+                            self.clients[user] = name
 
                         # Otherwise checks if it contains 'members'.
                         elif data[data.index("!")+1:8] == 'members':
@@ -120,7 +129,7 @@ class Server:
                             members = [self.clients[c] for c in self.clients]
 
                             # Send the user the list of connected members.
-                            s.send(', '.join(members))
+                            user.send(', '.join(members))
 
                         # Otherwise if the string contains quit.
                         elif 'quit' == data[data.index("!")+1:5]:
@@ -137,7 +146,7 @@ class Server:
                     else:
 
                         # Sends all the users the received message and the sender.
-                        self.msg_send(self.clients[s], " says: " + data)
+                        self.sendall(self.clients[user], " says: " + data)
 
                 # If there's no data or it returns false we know that the client
                 # is not connected anymore.
@@ -147,19 +156,19 @@ class Server:
                     break
 
         # Closes the client socket.
-        s.close()
+        user.close()
 
         # Sets a reference so that we can pass it to a function when it gets
         # deleted.
-        username = self.clients[s]
+        username = self.clients[user]
 
         # Delete the client entry from the client list.
-        del self.clients[s]
+        del self.clients[user]
 
         # Emits a warning to all members that the user has left.
-        self.msg_send('', username + ' just left.')
+        self.sendall('', username + ' just left.')
 
-    def msg_send(self, s, message):
+    def sendall(self, s, message):
         """(Socket, string)
 
         This method iterates on all the clients on the client list, sending
@@ -174,6 +183,12 @@ class Server:
             user.send(s + message)
 
     def __close__(self):
+
+        # Sets the running condition to false so that when it
+        # a loop knows that the server is closed.
+        self.running = False
+
+        # Closes the socket.
         self.sock.close()
 
 # If running the script by itself the block gets executed.
