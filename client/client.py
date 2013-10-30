@@ -2,22 +2,29 @@
 # This is a simple chat client used to test the chat server.
 # You can open as many instances of it as you want.
 
+import sys
 import socket
 from threading import Thread
 
 
 class Client(Thread):
 
-    def __init__(self, port=888, host=socket.gethostname()):
-        """(str, int)
-
+    def __init__(self, port=888, host=socket.gethostname(), input=raw_input, out=sys.stdout):
+        """
         Sets default values for port in which the socket will connect
         to 888, and the host to the current running the script.
         It can be changed on the class instantiation.
+
+        @type port: int
+        @type host: str
+        @type Sock: object
         """
 
+        self.input = input
         # Initiates the Thread class when the Server class is instantiated.
         super(Client, self).__init__()
+
+        self.out = out
 
         # Variable used by loops to check if it should continue (client is
         # connected).
@@ -34,8 +41,10 @@ class Client(Thread):
         # Connect the socket to the defined port and host.
         self.sock.connect((self.host, self.port))
 
+        # Checks if the user name isn't defined yet.
+
         # Listen for the standard input to the user's nickname.
-        name = raw_input("Please enter your nickname: ")
+        name = self.input("Please enter your nickname: ")
 
         # Send the server a message with the command name which sets the name
         # for the socket.
@@ -66,7 +75,13 @@ class Client(Thread):
             message = raw_input()
 
             # Send the server the entered message without any filtering.
-            self.sock.send(message)
+            self.send_message(message)
+
+    def send_message(self, message):
+        self.sock.send(message)
+
+    def __print(self, message):
+        self.out.write(message + "\n")
 
     def loop_output(self):
         """
@@ -87,7 +102,7 @@ class Client(Thread):
                 break
 
             # Print the received data to the screen.
-            print data
+            self.__print(data)
 
     def __close__(self):
         # Shutdown reading (RD) and writing (WR) side of the socket.
@@ -101,7 +116,7 @@ class Client(Thread):
         self.running = False
 
 # If running the script by itself the block gets executed.
-if __name__ == '__main__':
+if '__main__' == __name__:
     import doctest
     doctest.testmod()
 

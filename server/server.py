@@ -113,7 +113,7 @@ class Server(Thread):
                     if data.startswith("!"):
 
                         # Checks if the the string contains 'name' after the '!'.
-                        if data[data.index("!")+1:5] == 'name':
+                        if 'name' == data[data.index("!")+1:5]:
 
                             # Sets the variable name to anything after the colon.
                             name = data[data.index(":")+2:]
@@ -126,7 +126,7 @@ class Server(Thread):
                             self.clients[user] = name
 
                         # Otherwise checks if it contains 'members'.
-                        elif data[data.index("!")+1:8] == 'members':
+                        elif 'members' == data[data.index("!")+1:8]:
 
                             # Creates a list with every client name in the clients
                             # list, leaving out the socket objects.
@@ -196,7 +196,7 @@ class Server(Thread):
         self.sock.close()
 
 # If running the script by itself the block gets executed.
-if __name__ == '__main__':
+if '__main__' == __name__:
     import doctest
     doctest.testmod()
 

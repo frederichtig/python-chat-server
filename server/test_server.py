@@ -6,7 +6,7 @@ from server import Server
 class Tests(unittest.TestCase):
 
     def create_server(self):
-        port = 888
+        port = 889
         host = 'localhost'
 
         # Creates a new instant of the Server class, it will also inherit
@@ -44,7 +44,7 @@ class Tests(unittest.TestCase):
         self.assertEqual(data, 'Welcome!\n')
 
         # Send a command to the server so it closes.
-        server.__close__()
+        server.__close__(self)
 
     def test_two(self):
         server = self.create_server()
