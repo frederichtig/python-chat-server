@@ -9,52 +9,61 @@ sys.path.append(os.path.normpath(os.path.join(foo_dir, '..', '..')))
 from Server.server import Server
 
 
+class IoObj():
+    def __init__(self, arr):
+        self.output = self.input = ''
+        self.l = 0
+        self.a = arr
+        self.locked = True
+
+    def read(self, void=None):
+        while self.locked:
+            sleep(0.1)
+
+        self.locked = True
+        return self.input
+
+    def write(self, message):
+        self.output = message
+
+    def get_messages(self):
+        self.locked = False
+
+    def send_message(self, message):
+        self.input = message
+        self.locked = False
+
+
 class Tests(unittest.TestCase):
 
     port = 890
     host = 'localhost'
-    test_message = "Hello world."
-
-    class OutTest:
-        def __init__(self):
-            self.message = ''
-
-        def write(self, message):
-            print("I got the message: " + message)
-            self.message = message
-
-        def get_message(self):
-            return self.message
 
     def start_server(self):
         server = Server(self.port)
         server.start()
         return server
 
-    def create_client(self, out=sys.stdout):
-        client = Client(port=self.port, input=self.myrawinput, out=out)
+    def create_client(self, input, output=sys.stdout):
+        client = Client(self.port, name=input, output=output)
         client.start()
         return client
 
-    def myrawinput(self, message):
-        return "name"
-
     def test_one(self):
+        io_obj = IoObj(['name', 'Hello Buddy'])
         server = self.start_server()
-        sleep(0.5)
-        out_mock = self.OutTest()
-        sender = self.create_client()
-        sleep(0.5)
-        receiver = self.create_client(out_mock)
-        sleep(0.5)
+        sender = self.create_client(io_obj.read, io_obj.write)
+        sleep(0.1)
+        io_obj.send_message('name')
+        sleep(0.1)
+        io_obj.send_message('Hello Buddy')
+        sleep(0.1)
+        io_obj.get_messages()
 
-        sender.send_message("Hello Buddy")
-        sleep(0.5)
+        self.assertEqual("name says: Hello Buddy\n", io_obj.output)
 
-        self.assertEqual("name says: Hello Buddy\n", out_mock.get_message())
-
+        io_obj.locked = False
         sender.__close__()
-        receiver.__close__()
         server.__close__()
 
 if '__main__' == __name__:

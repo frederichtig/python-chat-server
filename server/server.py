@@ -187,7 +187,6 @@ class Server(Thread):
             user.send(s + message)
 
     def __close__(self):
-
         # Sets the running condition to false so that a loop knows
         # that the server is closed.
         self.running = False
@@ -205,5 +204,3 @@ if '__main__' == __name__:
 
     # Run the server.
     server.run()
-
-

@@ -44,7 +44,7 @@ class Tests(unittest.TestCase):
         self.assertEqual(data, 'Welcome!\n')
 
         # Send a command to the server so it closes.
-        server.__close__(self)
+        server.__close__()
 
     def test_two(self):
         server = self.create_server()

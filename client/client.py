@@ -9,7 +9,7 @@ from threading import Thread
 
 class Client(Thread):
 
-    def __init__(self, port=888, host=socket.gethostname(), input=raw_input, out=sys.stdout):
+    def __init__(self, port=888, host=socket.gethostname(), name=raw_input, output=sys.stdout.write):
         """
         Sets default values for port in which the socket will connect
         to 888, and the host to the current running the script.
@@ -17,14 +17,13 @@ class Client(Thread):
 
         @type port: int
         @type host: str
-        @type Sock: object
         """
 
-        self.input = input
         # Initiates the Thread class when the Server class is instantiated.
         super(Client, self).__init__()
 
-        self.out = out
+        self.input = name
+        self.output = output
 
         # Variable used by loops to check if it should continue (client is
         # connected).
@@ -72,16 +71,10 @@ class Client(Thread):
         while self.running:
 
             # Reads the user input to the console.
-            message = raw_input()
+            message = self.input()
 
             # Send the server the entered message without any filtering.
-            self.send_message(message)
-
-    def send_message(self, message):
-        self.sock.send(message)
-
-    def __print(self, message):
-        self.out.write(message + "\n")
+            self.sock.send(message)
 
     def loop_output(self):
         """
@@ -102,18 +95,15 @@ class Client(Thread):
                 break
 
             # Print the received data to the screen.
-            self.__print(data)
+            self.output(data+'\n')
 
     def __close__(self):
-        # Shutdown reading (RD) and writing (WR) side of the socket.
-        self.sock.shutdown(socket.SHUT_RDWR)
-
-        # Close the socket so it can't be used anymore.
-        self.sock.close()
-
         # Sets the running condition to false so that a loop knows
         # that the client is disconnected.
         self.running = False
+
+        # Close the socket so it can't be used anymore.
+        self.sock.close()
 
 # If running the script by itself the block gets executed.
 if '__main__' == __name__:
